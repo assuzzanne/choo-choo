@@ -1,3 +1,3 @@
 # choo-choo
 
-Run server: `npm start
+Run server: `npm start`
