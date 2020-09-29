@@ -30,5 +30,14 @@ describe("routing", () => {
         { time: "12:50", trainID: " Train-n01" },
       ]);
     });
+
+    it("it should fail if there is no param provided", async () => {
+      const res = await chai
+        .request(app)
+        .get("/trains/")
+        .send();
+
+        chai.assert.equal(res.status, 404);
+    });
   });
 });
