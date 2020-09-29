@@ -22,6 +22,9 @@ app.get("/trains/:date", (req, res) => {
     .on("data", (row) => {
       csvData.push(row);
     })
+    .on("error", () => {
+      console.error("Failed to process the CSV file!");
+    })
     .on("end", () => {
       console.info("CSV file successfully processed");
       const result = csvData.filter((elem) => elem.time > UTCTimeFormatted)
