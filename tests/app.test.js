@@ -39,5 +39,16 @@ describe("routing", () => {
 
         chai.assert.equal(res.status, 404);
     });
+
+    it("it should fail if there parameter format is not correct", async () => {
+      const date = "notadate";
+      const res = await chai
+        .request(app)
+        .get("/trains/" + date)
+        .send();
+
+        chai.assert.equal(res.status, 400);
+        chai.assert.deepEqual(res.text, "The parameter format is not correct!");
+    });
   });
 });
