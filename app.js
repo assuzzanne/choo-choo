@@ -11,7 +11,6 @@ app.get("/status", (req, res) => {
 
 app.get("/trains/:date", async (req, res) => {
   const result = await searchForTrainsHandler(req.params.date);
-  console.log('result', result);
   const status = Array.isArray(result) ? 200 : 400;
 
   res.status(status).send(result);

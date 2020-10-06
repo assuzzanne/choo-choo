@@ -15,8 +15,6 @@ module.exports = async function process(dateInString) {
     .format("HH:mm")
     .toString();
 
-  const csvData = [];
-
   // fs.createReadStream("data.csv")
   //   .pipe(csv())
   //   .on("data", (row) => {
@@ -29,8 +27,38 @@ module.exports = async function process(dateInString) {
   //   .on("error", () => {
   //     console.error("Failed to process the CSV file!");
   //   });
- 
 
-  // return csvData.filter((elem) => elem.time > UTCTimeFormatted);
-  return csvData;
+  const readFile = (fileName, encoding) => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(fileName, encoding, (err, data) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(data);
+      });
+    });
+  };
+
+  const csvData = [];
+  await readFile("data.csv", "utf8")
+    .then((data) => {
+      const tempArray = data.split("\n");
+
+      tempArray.forEach((elem) => {
+        const time = elem.substring(0, 5);
+        const train = elem.substring(7, 17);
+
+        const object = {
+          time: time,
+          train: train,
+        };
+        csvData.push(object);
+      });
+      console.log('csvData', csvData);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return csvData.filter((elem) => elem.time > UTCTimeFormatted).slice(0, 3);
 };
