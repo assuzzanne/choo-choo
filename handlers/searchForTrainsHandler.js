@@ -1,4 +1,3 @@
-const csv = require("csv-parser");
 const fs = require("fs");
 const moment = require("moment");
 
@@ -14,19 +13,6 @@ module.exports = async function process(dateInString) {
     .utc()
     .format("HH:mm")
     .toString();
-
-  // fs.createReadStream("data.csv")
-  //   .pipe(csv())
-  //   .on("data", (row) => {
-  //     csvData.push(row);
-  //   })
-  //   .on("end", () => {
-  //     console.log("csvData", csvData);
-  //     console.info("CSV file successfully processed");
-  //   })
-  //   .on("error", () => {
-  //     console.error("Failed to process the CSV file!");
-  //   });
 
   const readFile = (fileName, encoding) => {
     return new Promise((resolve, reject) => {
@@ -45,16 +31,10 @@ module.exports = async function process(dateInString) {
       const tempArray = data.split("\n");
 
       tempArray.forEach((elem) => {
-        const time = elem.substring(0, 5);
-        const train = elem.substring(7, 17);
-
-        const object = {
-          time: time,
-          train: train,
-        };
+        const [trainTime, trainName] = elem.split(", ");
+        const object = { time: trainTime, train: trainName };
         csvData.push(object);
       });
-      console.log('csvData', csvData);
     })
     .catch((err) => {
       console.log(err);
